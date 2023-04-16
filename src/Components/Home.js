@@ -4,35 +4,42 @@ import { useState, useEffect } from "react";
 function Home() {
   const [input, setInput] = useState("");
   const [apiData, setApiData] = useState(null);
+  let [searchResult,setSearchResult]=useState("random")
   useEffect(() => {
     async function fetchData(){
-      let url=await fetch("https://api.unsplash.com/search/photos/?query=flower&client_id=S84IAL8OaC3X5XAdqSzFo8_C84OSJHd9Z21t0U6VdVQ&per_page=10");
-      const response=await url.json();
+      let url=await fetch(`https://api.unsplash.com/search/photos/?query=${searchResult}&client_id=S84IAL8OaC3X5XAdqSzFo8_C84OSJHd9Z21t0U6VdVQ&per_page=10`);
+      const response=await url.json();  
       setApiData(response.results)
     }
     fetchData();
-  }, []);
+  });
   return (
-    <div className="wrapper">
+    <div className="content-container">
+      <div className="wrapper">
       <h1>Snapshot</h1>
       <input
         type="search"
         name="search"
         value={input}
         id="search_input"
-        onChange={(v) => setInput(v.target.value)}
+        autoComplete="off"
+        onChange={(v) => {
+          setInput(v.target.value)
+          setSearchResult(input)
+        }
+        }
+        
       />
       <div className="options-select">
-        <button>Mountain</button>
-        <button>Flowers</button>
-        <button>Technology</button>
-        <button>Love</button>
+        <button onClick={()=>setSearchResult("Mountain")}>Mountain</button>
+        <button onClick={()=>setSearchResult("nature")}>Nature</button>
+        <button onClick={()=>setSearchResult("Technology")}>Technology</button>
+        <button onClick={()=>setSearchResult("Love")}>Love</button>
       </div>
      
       <ul className="img-Con">
         {apiData &&
           apiData.map(items=>{
-            console.log(items.id)
           return(
             <li key={items.id}>
             <img src={items.urls.thumb} alt={items.tags[0].title}/>
@@ -41,6 +48,7 @@ function Home() {
           })
         }
       </ul>
+      </div>
     </div>
   );
 }
