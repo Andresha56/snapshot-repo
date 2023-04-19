@@ -7,7 +7,7 @@ function Home() {
   let [searchResult,setSearchResult]=useState("random")
   useEffect(() => {
     async function fetchData(){
-      let url=await fetch(`https://api.unsplash.com/search/photos/?query=${searchResult}&client_id=S84IAL8OaC3X5XAdqSzFo8_C84OSJHd9Z21t0U6VdVQ&r_page=10&h=200&w=250`);
+      let url=await fetch(`https://api.unsplash.com/search/photos/?query=${searchResult}&client_id=Api_key&r_page=10&h=200&w=250`);
       const response=await url.json();  
       setApiData(response.results)
     }
